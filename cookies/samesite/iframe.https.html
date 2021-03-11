@@ -36,7 +36,9 @@
             iframe.src = target + "/cookies/resources/postToParent.py";
             document.body.appendChild(iframe);
           });
-        });
+        })
+        // Clean up state to avoid interfering with subsequent tests.
+        .then(_ => resetSameSiteCookies(origin, value));
     }, title);
   }
 

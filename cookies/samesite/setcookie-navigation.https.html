@@ -37,6 +37,8 @@
       let samesite_cookie_names = ['samesite_strict', 'samesite_lax', 'samesite_none', 'samesite_unspecified'];
       assert_cookies_present(message.data.cookies, value, samesite_cookie_names, true);
       w.close();
+      // Clean up state to avoid interfering with subsequent tests.
+      await resetSameSiteCookies(origin_to, value);
     }, title);
   }
 
@@ -69,6 +71,8 @@
       assert_cookies_present(message.data.cookies, value, samesite_none_cookies, true);
       assert_cookies_present(message.data.cookies, value, samesite_cookies, !cross_site);
       w.close();
+      // Clean up state to avoid interfering with subsequent tests.
+      await resetSameSiteCookies(iframe_origin_to, value);
     }, title);
   }
 

@@ -56,7 +56,9 @@
                            assert_cookie_present(target, "samesite_unspecified", value));
           }
           return Promise.all(asserts);
-        });
+        })
+        // Clean up state to avoid interfering with subsequent tests.
+        .then(_ => resetSameSiteCookies(origin, value));
     }, title);
   }
 

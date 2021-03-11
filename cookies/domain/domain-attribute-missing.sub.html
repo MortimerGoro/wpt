@@ -31,5 +31,8 @@
         }))
         .catch(_ => assert_unreached);
     }, "No domain attribute => not sent with subdomain requests.");
+
+    // Clean up cookie to avoid interfering with subsequent tests.
+    document.cookie = `${cookieName}=0; Path=/; max-age=0`;
   </script>
 </body>

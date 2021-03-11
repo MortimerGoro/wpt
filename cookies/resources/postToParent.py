@@ -25,8 +25,13 @@ def main(request, response):
   }
 
 
-  if (window.opener)
+  if (window.opener) {
     window.opener.postMessage(data, "*");
+    // Clean up state to avoid interfering with subsequent tests.
+    for (const cookie in data) {
+      document.cookie = `${cookie}=0; max-age=0`;
+    }
+  }
 
   window.addEventListener("message", e => {
     console.log(e);

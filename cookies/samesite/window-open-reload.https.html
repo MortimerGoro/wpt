@@ -36,7 +36,9 @@
             if (!w)
               reject("Popup could not be opened (did you allow the test site in your popup blocker?).");
           });
-        });
+        })
+        // Clean up state to avoid interfering with subsequent tests.
+        .then(_ => resetSameSiteCookies(origin, value));
     }, title);
   }
 

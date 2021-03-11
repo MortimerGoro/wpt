@@ -16,7 +16,9 @@
 
             .then(r => r.json())
             .then(cookies => getSameSiteVerifier()(expectedStatus, value, cookies, DomSameSiteStatus.SAME_SITE));
-        });
+        })
+        // Clean up state to avoid interfering with subsequent tests.
+        .then(_ => resetSameSiteCookies(origin, value));
     }, title);
   }
 

@@ -22,6 +22,9 @@
       assert_cookie(SECURE_ORIGIN, e.data, "samesite_lax", value, false);
       assert_cookie(SECURE_ORIGIN, e.data, "samesite_strict", value, false);
       assert_cookie(SECURE_ORIGIN, e.data, "samesite_none", value, true);
+
+      // Clean up state to avoid interfering with subsequent tests.
+      await resetSameSiteCookies(SECURE_ORIGIN, value);
     }, "SameSite cookies with intervening sandboxed iframe and subresources");
   }
   </script>
