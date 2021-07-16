@@ -9,21 +9,14 @@ dictionary RTCInsertableStreams {
     WritableStream writable;
 };
 
-// New fields in RTCConfiguration
-partial dictionary RTCConfiguration {
-    boolean encodedInsertableStreams = false;
-};
-
 typedef (SFrameTransform or RTCRtpScriptTransform) RTCRtpTransform;
 
 // New methods for RTCRtpSender and RTCRtpReceiver
 partial interface RTCRtpSender {
-    RTCInsertableStreams createEncodedStreams();
     attribute RTCRtpTransform? transform;
 };
 
 partial interface RTCRtpReceiver {
-    RTCInsertableStreams createEncodedStreams();
     attribute RTCRtpTransform? transform;
 };
 
@@ -43,8 +36,30 @@ typedef (SmallCryptoKeyID or bigint) CryptoKeyID;
 interface SFrameTransform {
     constructor(optional SFrameTransformOptions options = {});
     Promise<undefined> setEncryptionKey(CryptoKey key, optional CryptoKeyID keyID);
+    attribute EventHandler onerror;
 };
 SFrameTransform includes GenericTransformStream;
+
+enum SFrameTransformErrorEventType {
+    "authentication",
+    "keyID",
+    "syntax"
+};
+
+[Exposed=(Window,DedicatedWorker)]
+interface SFrameTransformErrorEvent : Event {
+    constructor(DOMString type, SFrameTransformErrorEventInit eventInitDict);
+
+    readonly attribute SFrameTransformErrorEventType type;
+    readonly attribute CryptoKeyID? keyID;
+    readonly attribute any frame;
+};
+
+dictionary SFrameTransformErrorEventInit : EventInit {
+    required SFrameTransformErrorEventType type;
+    required any frame;
+    CryptoKeyID? keyID;
+};
 
 // New enum for video frame types. Will eventually re-use the equivalent defined
 // by WebCodecs.
